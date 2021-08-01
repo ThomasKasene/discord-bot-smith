@@ -35,7 +35,7 @@ public class DiscordGatewayManager implements DisposableBean {
 
             if (command != null) {
                 message.getChannel().subscribe(channel -> {
-                    channel.createMessage("You said \"" + command + "\"");
+                    channel.createMessage("You said \"" + command + "\"").subscribe();
                 });
             }
         });
