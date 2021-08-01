@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
@@ -29,7 +30,14 @@ public class DiscordGatewayManager implements DisposableBean {
 
             log.info("Received a message: {}", message.getContent());
 
-            String command = pattern.matcher(message.getContent()).group(2);
+            Matcher matcher = pattern.matcher(message.getContent());
+
+            if (!matcher.find()) {
+                // This message isn't for us
+                return;
+            }
+
+            String command = matcher.group(2);
 
             log.info("Resolved the command {}", command);
 
