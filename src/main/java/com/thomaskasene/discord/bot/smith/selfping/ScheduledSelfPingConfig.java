@@ -11,17 +11,17 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class ScheduledSelfPingConfig {
 
-    private final ApplicationProperties applicationProperties;
     private final RestTemplate restTemplate;
 
     public ScheduledSelfPingConfig(ApplicationProperties applicationProperties, RestTemplateBuilder restTemplateBuilder) {
-        this.applicationProperties = applicationProperties;
-        this.restTemplate = restTemplateBuilder.build();
+        this.restTemplate = restTemplateBuilder
+                .rootUri(applicationProperties.getSelfPingUrl())
+                .build();
     }
 
-    @Scheduled(fixedDelay = 10_000L)
+    @Scheduled(fixedDelay = 10 * 60 * 1000)
     public void executeScheduledSelfPing() {
         log.info("Pinging self");
-        restTemplate.getForEntity(applicationProperties.getSelfPingUrl(), Void.class);
+        restTemplate.getForEntity("/api/ping", Void.class);
     }
 }
