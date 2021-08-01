@@ -11,4 +11,6 @@ public class ApplicationProperties {
 
     private String selfPingUrl;
 
+    private String discordBotToken;
+
 }
