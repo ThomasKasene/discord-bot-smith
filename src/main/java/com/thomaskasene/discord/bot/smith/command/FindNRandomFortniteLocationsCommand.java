@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.joining;
 public class FindNRandomFortniteLocationsCommand implements Command {
 
     private final Pattern applicabilityPattern = Pattern.compile(
-            "^(?:pick|choose|find(?: us)?|give(?: us)?) (a|some|[0-9]+)(?: random)?(?: fortnite)? location[s]?$",
+            "^(?:pick|choose|find(?: us|me)?|give(?: us|me)?) (a|some|[0-9]+)(?: random)?(?: fortnite)? location[s]?$",
             CASE_INSENSITIVE);
 
     private final FortniteApiService fortniteApiService;
