@@ -13,4 +13,14 @@ public class ApplicationProperties {
 
     private String discordBotToken;
 
+    private FortniteApi fortniteApi = new FortniteApi();
+
+    @Data
+    public static class FortniteApi {
+
+        private String url;
+
+        private String token;
+
+    }
 }

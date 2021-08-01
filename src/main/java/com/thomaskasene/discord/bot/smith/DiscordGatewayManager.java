@@ -1,5 +1,6 @@
 package com.thomaskasene.discord.bot.smith;
 
+import com.thomaskasene.discord.bot.smith.command.Command;
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,12 +21,11 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 public class DiscordGatewayManager implements DisposableBean {
 
     private final GatewayDiscordClient gatewayDiscordClient;
-    private final User selfUser;
 
-    public DiscordGatewayManager(ApplicationProperties applicationProperties) {
+    public DiscordGatewayManager(ApplicationProperties applicationProperties, List<Command> commands) {
         DiscordClient discordClient = DiscordClient.create(applicationProperties.getDiscordBotToken());
         gatewayDiscordClient = discordClient.login().block();
-        selfUser = gatewayDiscordClient.getSelf().block();
+        User selfUser = gatewayDiscordClient.getSelf().block();
 
         Pattern pattern = Pattern.compile("^(smith, )?(.+)(, smith[\\\\?]?)?$", CASE_INSENSITIVE);
 
@@ -35,22 +36,22 @@ public class DiscordGatewayManager implements DisposableBean {
                 return; // This message was posted by us
             }
 
-            log.info("Received a message: {}", message.getContent());
-
             Matcher matcher = pattern.matcher(message.getContent());
 
             if (!matcher.find()) {
                 return; // This message isn't for us
             }
 
-            String command = matcher.group(2);
+            String commandContent = matcher.group(2);
 
-            log.info("Resolved the command {}", command);
+            if (commandContent != null) {
+                boolean wasHandled = commands.stream().anyMatch(command -> command.execute(message, commandContent));
 
-            if (command != null) {
-                message.getChannel().subscribe(channel -> {
-                    channel.createMessage("You said \"" + command + "\"").subscribe();
-                });
+                if (!wasHandled) {
+                    message.getChannel().subscribe(channel -> {
+                        channel.createMessage("I don't know what you mean by \"" + commandContent + "\"").subscribe();
+                    });
+                }
             }
         });
     }
