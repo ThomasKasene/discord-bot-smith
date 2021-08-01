@@ -16,7 +16,7 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 public class FindNRandomFortniteLocationsCommand implements Command {
 
     private final Pattern applicabilityPattern = Pattern.compile(
-            "^(?:pick|choose|find(?: us)?) (a|some|[0-9]+)(?: random)?(?: fortnite)? location[s]?$",
+            "^(?:pick|choose|find(?: us)?|give(?: us)?) (a|some|[0-9]+)(?: random)?(?: fortnite)? location[s]?$",
             CASE_INSENSITIVE);
 
     private final Random randomGenerator = new Random();
