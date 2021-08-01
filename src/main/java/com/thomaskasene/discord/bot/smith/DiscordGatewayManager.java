@@ -27,7 +27,7 @@ public class DiscordGatewayManager implements DisposableBean {
         gatewayDiscordClient = discordClient.login().block();
         User selfUser = gatewayDiscordClient.getSelf().block();
 
-        Pattern pattern = Pattern.compile("^(smith, )?(.+)(, smith[\\\\?]?)?$", CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("^smith, (.+)|(.+), smith[\\\\?]?$", CASE_INSENSITIVE);
 
         gatewayDiscordClient.on(MessageCreateEvent.class).subscribe(messageCreateEvent -> {
             Message message = messageCreateEvent.getMessage();
