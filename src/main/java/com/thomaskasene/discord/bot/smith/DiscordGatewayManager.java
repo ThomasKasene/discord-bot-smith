@@ -42,7 +42,7 @@ public class DiscordGatewayManager implements DisposableBean {
                 return; // This message isn't for us
             }
 
-            String commandContent = matcher.group(2);
+            String commandContent = matcher.group(1);
 
             if (commandContent != null) {
                 boolean wasHandled = commands.stream().anyMatch(command -> command.execute(message, commandContent));
