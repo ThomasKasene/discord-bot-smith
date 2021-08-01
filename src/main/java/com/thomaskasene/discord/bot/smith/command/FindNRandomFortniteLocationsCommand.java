@@ -16,7 +16,7 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 public class FindNRandomFortniteLocationsCommand implements Command {
 
     private final Pattern applicabilityPattern = Pattern.compile(
-            "^find( us)? (a|some|[0-9]+)( random)?( fortnite)? location[s]?$",
+            "^(pick|choose|find( us)?) (a|some|[0-9]+)( random)?( fortnite)? location[s]?$",
             CASE_INSENSITIVE);
 
     private final Random randomGenerator = new Random();
@@ -52,7 +52,7 @@ public class FindNRandomFortniteLocationsCommand implements Command {
             chosenLocations.add(namedLocations.remove(randomGenerator.nextInt(namedLocations.size())));
         }
 
-        String newLineDelimitedLocations = String.join("\n", chosenLocations);
+        String newLineDelimitedLocations = String.join("\n", chosenLocations).toLowerCase();
 
         message.getChannel().subscribe(messageChannel -> messageChannel.createMessage(newLineDelimitedLocations).subscribe());
 
