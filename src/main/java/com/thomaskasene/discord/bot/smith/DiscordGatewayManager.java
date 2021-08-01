@@ -31,7 +31,7 @@ public class DiscordGatewayManager implements DisposableBean {
         gatewayDiscordClient.on(MessageCreateEvent.class).subscribe(messageCreateEvent -> {
             Message message = messageCreateEvent.getMessage();
 
-            if (message.getAuthor().map(user -> user == selfUser).orElse(false)) {
+            if (message.getAuthor().map(user -> user.equals(selfUser)).orElse(false)) {
                 return; // This message was posted by us
             }
 
