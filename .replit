@@ -1,2 +1,2 @@
-language = "bash"
+language = "java11"
 run = "mvn clean verify && java -jar ./app.jar"
